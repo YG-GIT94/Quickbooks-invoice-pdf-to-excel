@@ -263,6 +263,7 @@ def map_data_to_template(invoice_data, products_df, ws, start_row):
 def main():
     root = Tk()
     root.withdraw()
+    root.attributes('-topmost', True)  # Make the root window appear in front of all other windows
     root.update()
     pdf_paths = filedialog.askopenfilenames(title="Select Invoice PDF files", filetypes=[("PDF Files", "*.pdf")])
     if not pdf_paths:
@@ -274,7 +275,8 @@ def main():
         messagebox.showwarning("No save location", "No save location specified. Exiting...")
         return
 
-    root.destroy()
+    root.attributes('-topmost', False)  # Reset the root window attribute
+    root.after(500, root.destroy)  # Delay the destruction of the root window to allow dialogs to complete
 
     # Create the template
     create_template(template_path)
@@ -292,7 +294,7 @@ def main():
     wb.save(template_path)
     print(f"Template created and saved as {template_path}")
     messagebox.showinfo("Success", f"Template created and saved as {template_path}")
+
 # Run the main function
 if __name__ == "__main__":
     main()
-
